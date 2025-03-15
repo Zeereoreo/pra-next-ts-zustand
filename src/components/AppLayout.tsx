@@ -2,6 +2,7 @@
 
 import Header from './Header';
 import Search from './Search';
+import CampingList from './CampingList';
 import {
     AppWrapper,
     MobileContainer,
@@ -28,6 +29,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <Header />
                 <Search />
                 <MainContainer>
+                    <CampingList />
                     {children}
                 </MainContainer>
                 <BottomNavigation>

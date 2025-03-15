@@ -8,6 +8,14 @@ export interface SearchParams {
   sigunguNm?: string; // 시/군/구 이름
 }
 
+export interface LocationSearchParams {
+  mapX: string; // 경도
+  mapY: string; // 위도
+  radius?: string; // 거리 반경(m)
+  numOfRows?: number;
+  pageNo?: number;
+}
+
 export interface CampingSite {
   contentId: string;
   facltNm: string; // 캠핑장 이름
@@ -66,6 +74,25 @@ export const getCampingSiteDetails = async (contentId: string) => {
     return response;
   } catch (error) {
     console.error('Failed to get camping site details:', error);
+    throw error;
+  }
+};
+
+// 위치 기반 캠핑장 목록 조회
+export const searchLocationBasedList = async (params: LocationSearchParams) => {
+  try {
+    const response = await instance.get<CampingSite[]>('/locationBasedList', {
+      params: {
+        numOfRows: params.numOfRows || 10,
+        pageNo: params.pageNo || 1,
+        mapX: params.mapX || '128.6142847',
+        mapY: params.mapY || '36.0345423',
+        radius: params.radius || '2000',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Failed to search location based camping sites:', error);
     throw error;
   }
 }; 
