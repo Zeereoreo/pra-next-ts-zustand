@@ -6,6 +6,7 @@ export interface SearchParams {
   pageNo?: number;
   doNm?: string; // 도/시 이름
   sigunguNm?: string; // 시/군/구 이름
+  induty?: string;  // 추가: 업종 타입 파라미터
 }
 
 export interface LocationSearchParams {
@@ -48,17 +49,25 @@ export interface CampingSite {
 // 캠핑장 기본 정보 목록 조회
 export const searchCampingSites = async (params: SearchParams = {}) => {
   try {
+    const encodedKeyword = params.keyword ? encodeURIComponent(params.keyword) : '';
+    console.log('baseList API 요청 파라미터:', {
+      ...params,
+      keyword: encodedKeyword
+    });
     const response = await instance.get<CampingSite[]>('/basedList', {
       params: {
         numOfRows: params.numOfRows || 10,
         pageNo: params.pageNo || 1,
-        keyword: params.keyword,
-        ...params,
+        // keyword: encodedKeyword,
+        // doNm: params.doNm,
+        // sigunguNm: params.sigunguNm,
+        // induty: params.induty,
       },
     });
+    console.log('baseList API 응답:', response);
     return response;
   } catch (error) {
-    console.error('Failed to search camping sites:', error);
+    console.error('baseList API 호출 실패:', error);
     throw error;
   }
 };
@@ -93,6 +102,29 @@ export const searchLocationBasedList = async (params: LocationSearchParams) => {
     return response;
   } catch (error) {
     console.error('Failed to search location based camping sites:', error);
+    throw error;
+  }
+};
+
+// 캠핑장 검색 목록 조회 (키워드 검색)
+export const searchCampingList = async (params: SearchParams = {}) => {
+  try {
+    const encodedKeyword = params.keyword ? encodeURIComponent(params.keyword) : '';
+    console.log('searchList API 요청 파라미터:', {
+      ...params,
+      keyword: encodedKeyword
+    });
+    const response = await instance.get<CampingSite[]>('/searchList', {
+      params: {
+        numOfRows: params.numOfRows || 10,
+        pageNo: params.pageNo || 1,
+        keyword: encodedKeyword,
+      },
+    });
+    console.log('searchList API 응답:', response);
+    return response;
+  } catch (error) {
+    console.error('searchList API 호출 실패:', error);
     throw error;
   }
 }; 

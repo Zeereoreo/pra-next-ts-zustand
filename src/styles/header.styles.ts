@@ -35,4 +35,17 @@ export const LoginButton = styled.button`
 
 export const PlaceholderDiv = styled.div`
   width: 80px;
+`;
+
+export const BackButton = styled.button`
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #333;
 `; 

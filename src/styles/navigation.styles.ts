@@ -36,7 +36,7 @@ export const NavItem = styled.button`
   }
 `;
 
-export const IconWrapper = styled.div`
+export const IconWrapper = styled.span`
   font-size: 24px;
   margin-bottom: 4px;
 `; 

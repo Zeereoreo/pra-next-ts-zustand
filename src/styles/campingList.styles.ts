@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 export const ListContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
   padding: 20px;
+  height: calc(100vh - 180px); // 헤더, 검색바, 하단 네비게이션 높이를 제외
   display: flex;
   flex-direction: column;
   gap: 20px;

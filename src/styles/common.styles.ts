@@ -28,7 +28,7 @@ export const MobileContainer = styled.div`
 
 export const MainContainer = styled.div`
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding-bottom: 60px;
 `;
 
