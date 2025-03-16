@@ -43,7 +43,7 @@ export const CampingCard = styled.div`
 export const CardImage = styled.div<{ $imageUrl?: string }>`
   width: 100%;
   height: 200px;
-  background-image: url(${props => props.$imageUrl || '/default-camping.jpg'});
+  background-image: url(${props => props.$imageUrl || ''});
   background-size: cover;
   background-position: center;
 `;

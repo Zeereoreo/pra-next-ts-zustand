@@ -10,20 +10,28 @@ import {
     CardImage,
     CardContent,
     CampingName,
-    Price,
     TagList,
     TagItem
 } from '@/styles/campingList.styles';
+
+const INITIAL_RADIUS = 2000;
+const MAX_RADIUS = 20000;
+const RADIUS_INCREMENT = 3000;
 
 export default function CampingList() {
     const [campingSites, setCampingSites] = useState<CampingSite[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [userLocation, setUserLocation] = useState<{ mapX: string; mapY: string } | null>(null);
+    const [currentRadius, setCurrentRadius] = useState(INITIAL_RADIUS);
 
     useEffect(() => {
         const getUserLocation = () => {
             if (!navigator.geolocation) {
                 console.log('Geolocation이 지원되지 않는 브라우저입니다.');
+                setUserLocation({
+                    mapX: '128.6142847',
+                    mapY: '36.0345423'
+                });
                 return;
             }
 
@@ -48,24 +56,46 @@ export default function CampingList() {
         getUserLocation();
     }, []);
 
+    const loadCampingSites = async (radius: number) => {
+        if (!userLocation) return [];
+
+        try {
+            const locationParams: LocationSearchParams = {
+                mapX: userLocation.mapX,
+                mapY: userLocation.mapY,
+                radius: radius.toString(),
+                numOfRows: 20,
+                pageNo: 1,
+            };
+
+            const results = await searchLocationBasedList(locationParams);
+            return Array.isArray(results) ? results : [];
+        } catch (error) {
+            console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
+            return [];
+        }
+    };
+
     useEffect(() => {
-        const loadCampingSites = async () => {
+        const loadMoreCampingSites = async () => {
             if (!userLocation) return;
 
             try {
                 setIsLoading(true);
-                const locationParams: LocationSearchParams = {
-                    mapX: userLocation.mapX,
-                    mapY: userLocation.mapY,
-                    radius: '2000',
-                    numOfRows: 10,
-                    pageNo: 1,
-                };
+                let radius = INITIAL_RADIUS;
+                let sites: CampingSite[] = [];
 
-                const results = await searchLocationBasedList(locationParams);
-                if (Array.isArray(results)) {
-                    setCampingSites(results);
+                while (sites.length < 10 && radius <= MAX_RADIUS) {
+                    sites = await loadCampingSites(radius);
+                    if (sites.length < 10) {
+                        radius += RADIUS_INCREMENT;
+                    } else {
+                        break;
+                    }
                 }
+
+                setCurrentRadius(radius);
+                setCampingSites(sites);
             } catch (error) {
                 console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
             } finally {
@@ -73,7 +103,7 @@ export default function CampingList() {
             }
         };
 
-        loadCampingSites();
+        loadMoreCampingSites();
     }, [userLocation]);
 
     if (isLoading) {
@@ -84,7 +114,10 @@ export default function CampingList() {
         <ListContainer>
             <ListTitle>
                 내 주변 캠핑장
-                <span>{campingSites.length}개의 캠핑장</span>
+                {/* <span>
+                    {campingSites.length}개의 캠핑장
+                    {currentRadius !== INITIAL_RADIUS && ` (반경 ${(currentRadius / 1000).toFixed(1)}km)`}
+                </span> */}
             </ListTitle>
             <CampingGrid>
                 {campingSites.map((site) => (

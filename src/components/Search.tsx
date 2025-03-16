@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -30,14 +30,13 @@ import {
 import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { useSearchStore } from '@/store/searchStore';
-import { searchCampingSites, searchLocationBasedList, type SearchParams, type LocationSearchParams } from '@/api/camping';
+import { searchCampingSites, type SearchParams } from '@/api/camping';
 import { useRouter } from 'next/navigation';
 
 export default function Search() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [userLocation, setUserLocation] = useState<{ mapX: string; mapY: string } | null>(null);
     const router = useRouter();
 
     const { setSearchState, resetSearchState, ...searchState } = useSearchStore();
@@ -47,58 +46,6 @@ export default function Search() {
         personnel: searchState.personnel,
         tags: searchState.tags,
     });
-
-    useEffect(() => {
-        const getUserLocation = () => {
-            if (!navigator.geolocation) {
-                console.log('Geolocation이 지원되지 않는 브라우저입니다.');
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { longitude, latitude } = position.coords;
-                    setUserLocation({
-                        mapX: longitude.toString(),
-                        mapY: latitude.toString()
-                    });
-                },
-                (error) => {
-                    console.error('위치 정보를 가져오는데 실패했습니다:', error);
-                    // 위치 정보를 가져오지 못한 경우 기본 위치 사용 (대한민국 중심점)
-                    setUserLocation({
-                        mapX: '128.6142847',
-                        mapY: '36.0345423'
-                    });
-                }
-            );
-        };
-
-        getUserLocation();
-    }, []);
-
-    useEffect(() => {
-        const loadInitialCampingSites = async () => {
-            if (!userLocation) return;
-
-            try {
-                const locationParams: LocationSearchParams = {
-                    mapX: userLocation.mapX,
-                    mapY: userLocation.mapY,
-                    radius: '2000',
-                    numOfRows: 10,
-                    pageNo: 1,
-                };
-
-                const results = await searchLocationBasedList(locationParams);
-                console.log('위치 기반 캠핑장 목록:', results);
-            } catch (error) {
-                console.error('위치 기반 검색 실패:', error);
-            }
-        };
-
-        loadInitialCampingSites();
-    }, [userLocation]);
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
