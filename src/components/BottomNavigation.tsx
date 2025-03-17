@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useModalStore } from '@/store/modalStore';
+import { useState } from 'react';
+import SearchModal from './SearchModal';
 import {
     BottomNavigation as StyledBottomNavigation,
     NavItem,
@@ -11,7 +12,7 @@ import {
 export default function BottomNavigation() {
     const router = useRouter();
     const pathname = usePathname();
-    const { openSearchModal } = useModalStore();
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
     const isHome = pathname === '/';
 
@@ -21,7 +22,7 @@ export default function BottomNavigation() {
                 router.push('/');
                 break;
             case 'search':
-                openSearchModal();
+                setIsSearchModalOpen(true);
                 break;
             case 'cs':
                 // 고객센터 기능 준비중
@@ -37,26 +38,32 @@ export default function BottomNavigation() {
     };
 
     return (
-        <StyledBottomNavigation>
-            <NavItem
-                className={isHome ? 'active' : ''}
-                onClick={() => handleNavClick('home')}
-            >
-                <IconWrapper>🏠</IconWrapper>
-                홈
-            </NavItem>
-            <NavItem onClick={() => handleNavClick('search')}>
-                <IconWrapper>🔍</IconWrapper>
-                검색
-            </NavItem>
-            <NavItem onClick={() => handleNavClick('cs')}>
-                <IconWrapper>🎧</IconWrapper>
-                고객센터
-            </NavItem>
-            <NavItem onClick={() => handleNavClick('profile')}>
-                <IconWrapper>👤</IconWrapper>
-                프로필
-            </NavItem>
-        </StyledBottomNavigation>
+        <>
+            <StyledBottomNavigation>
+                <NavItem
+                    className={isHome ? 'active' : ''}
+                    onClick={() => handleNavClick('home')}
+                >
+                    <IconWrapper>🏠</IconWrapper>
+                    홈
+                </NavItem>
+                <NavItem onClick={() => handleNavClick('search')}>
+                    <IconWrapper>🔍</IconWrapper>
+                    검색
+                </NavItem>
+                <NavItem onClick={() => handleNavClick('cs')}>
+                    <IconWrapper>🎧</IconWrapper>
+                    고객센터
+                </NavItem>
+                <NavItem onClick={() => handleNavClick('profile')}>
+                    <IconWrapper>👤</IconWrapper>
+                    프로필
+                </NavItem>
+            </StyledBottomNavigation>
+            <SearchModal
+                isOpen={isSearchModalOpen}
+                onClose={() => setIsSearchModalOpen(false)}
+            />
+        </>
     );
-} 
+}

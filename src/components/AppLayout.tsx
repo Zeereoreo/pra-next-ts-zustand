@@ -5,7 +5,6 @@ import Search from './Search';
 import CampingList from './CampingList';
 import CategoryMenu from './CategoryMenu';
 import { useRouter, usePathname } from 'next/navigation';
-import { useState } from 'react';
 import {
     AppWrapper,
     MobileContainer,
@@ -15,12 +14,7 @@ import {
     SubText,
     MainContainer
 } from '@/styles/common.styles';
-import {
-    BottomNavigation,
-    NavItem,
-    IconWrapper
-} from '@/styles/navigation.styles';
-import SearchModal from './SearchModal';
+import BottomNavigation from './BottomNavigation';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -29,8 +23,6 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
     const router = useRouter();
     const pathname = usePathname();
-    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-
     const isHome = pathname === '/';
 
     return (
@@ -42,32 +34,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <MainContainer>
                     <CampingList />
                     {children}
-                    <BottomNavigation>
-                        <NavItem
-                            className={isHome ? 'active' : ''}
-                            onClick={() => router.push('/')}
-                        >
-                            <IconWrapper>🏠</IconWrapper>
-                            홈
-                        </NavItem>
-                        <NavItem onClick={() => setIsSearchModalOpen(true)}>
-                            <IconWrapper>🔍</IconWrapper>
-                            검색
-                        </NavItem>
-                        <NavItem onClick={() => alert('준비중인 기능입니다.')}>
-                            <IconWrapper>🎧</IconWrapper>
-                            고객센터
-                        </NavItem>
-                        <NavItem onClick={() => alert('준비중인 기능입니다.')}>
-                            <IconWrapper>👤</IconWrapper>
-                            프로필
-                        </NavItem>
-                    </BottomNavigation>
                 </MainContainer>
-                <SearchModal
-                    isOpen={isSearchModalOpen}
-                    onClose={() => setIsSearchModalOpen(false)}
-                />
+                <BottomNavigation />
             </MobileContainer>
             <DesktopSection>
                 <QRCodeWrapper>
@@ -81,4 +49,4 @@ export default function AppLayout({ children }: AppLayoutProps) {
             </DesktopSection>
         </AppWrapper>
     );
-} 
+}

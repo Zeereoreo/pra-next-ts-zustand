@@ -16,6 +16,7 @@ import {
     TagList,
     TagItem
 } from '@/styles/campingList.styles';
+import CategoryMenu from './CategoryMenu';
 
 interface CategoryPageProps {
     title: string;
@@ -53,7 +54,7 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
         let currentPage = page;
         let sites: CampingSite[] = [];
 
-        while (sites.length < 10 && currentPage <= 5) { // 최대 5페이지까지만 시도
+        while (sites.length < 10 && currentPage <= 5) {
             const newSites = await loadCampingSites(currentPage);
             sites = [...sites, ...newSites];
             currentPage += 1;
@@ -81,6 +82,7 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
             <>
                 <BackHeader title={title} />
                 <Search />
+                <CategoryMenu />
                 <MainContainer>
                     <ListContainer>로딩 중...</ListContainer>
                 </MainContainer>
@@ -93,6 +95,7 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
         <>
             <BackHeader title={title} />
             <Search />
+            <CategoryMenu />
             <MainContainer>
                 <ListContainer>
                     <CampingGrid>

@@ -13,6 +13,7 @@ import {
     MainContainer
 } from '@/styles/common.styles';
 import styled from 'styled-components';
+import CategoryMenu from '@/components/CategoryMenu';
 
 const PrepareContainer = styled.div`
     display: flex;
