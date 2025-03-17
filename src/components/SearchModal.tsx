@@ -88,25 +88,20 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const handleSearch = async () => {
         if (!localState.destination && localState.tags.length === 0) return;
 
-        console.log('현재 검색 상태:', {
-            destination: localState.destination,
-            dateRange: localState.dateRange,
-            personnel: localState.personnel,
-            tags: localState.tags
-        });
-
         try {
             setIsLoading(true);
 
-            // 검색어 생성 (여행지와 태그만 포함)
-            const searchTerms = [];
+            // 여행지와 태그를 모두 검색어로 사용
+            const searchKeywords = [];
             if (localState.destination) {
-                searchTerms.push(localState.destination);
+                searchKeywords.push(localState.destination);
             }
             if (localState.tags.length > 0) {
-                searchTerms.push(...localState.tags);
+                searchKeywords.push(...localState.tags);
             }
-            const searchKeyword = searchTerms.join(' ');
+
+            const searchKeyword = searchKeywords.join('');
+            console.log('검색 키워드:', searchKeyword);
 
             // searchList API 호출
             const searchParams: SearchParams = {
@@ -115,32 +110,23 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 pageNo: 1,
             };
 
-            const searchResults = await searchCampingList(searchParams);
-            console.log('검색 결과:', searchResults);
+            const response = await searchCampingList(searchParams);
+            console.log('검색 결과:', response);
 
-            setSearchState(localState);
+            // 모든 상태를 한 번에 업데이트
+            setSearchState({
+                ...localState,
+                searchResults: response
+            });
+
+            console.log('저장된 상태:', useSearchStore.getState());
+
             onClose();
 
-            // URL 파라미터 생성 (검색어와 태그는 별도로 처리)
-            const searchQuery = new URLSearchParams();
-            if (localState.destination) {
-                searchQuery.append('keyword', localState.destination);
-            }
-            if (localState.dateRange[0]) {
-                searchQuery.append('checkIn', format(localState.dateRange[0], 'yyyy-MM-dd'));
-            }
-            if (localState.dateRange[1]) {
-                searchQuery.append('checkOut', format(localState.dateRange[1], 'yyyy-MM-dd'));
-            }
-            searchQuery.append('personnel', localState.personnel.toString());
-            if (localState.tags.length > 0) {
-                searchQuery.append('tags', localState.tags.join(','));
-            }
-
             // 검색 결과 페이지로 이동
-            // router.push(`/search-results?${searchQuery.toString()}`);
+            router.push('/search');
         } catch (error) {
-            console.error('Search failed:', error);
+            console.error('검색 실패:', error);
         } finally {
             setIsLoading(false);
         }

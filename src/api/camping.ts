@@ -46,6 +46,16 @@ export interface CampingSite {
   sigunguNm: string; // 시군구
 }
 
+interface ApiResponse {
+  response: {
+    body: {
+      items: {
+        item: CampingSite | CampingSite[];
+      };
+    };
+  };
+}
+
 // 캠핑장 기본 정보 목록 조회
 export const searchCampingSites = async (params: SearchParams = {}) => {
   try {
@@ -109,16 +119,16 @@ export const searchLocationBasedList = async (params: LocationSearchParams) => {
 // 캠핑장 검색 목록 조회 (키워드 검색)
 export const searchCampingList = async (params: SearchParams = {}) => {
   try {
-    const encodedKeyword = params.keyword ? encodeURIComponent(params.keyword) : '';
+    const keyword = params.keyword || '야영장';
     console.log('searchList API 요청 파라미터:', {
       ...params,
-      keyword: encodedKeyword
+      keyword
     });
     const response = await instance.get<CampingSite[]>('/searchList', {
       params: {
         numOfRows: params.numOfRows || 10,
         pageNo: params.pageNo || 1,
-        keyword: encodedKeyword,
+        keyword,
       },
     });
     console.log('searchList API 응답:', response);

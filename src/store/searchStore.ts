@@ -1,11 +1,14 @@
 import { create } from 'zustand';
+import { CampingSite } from '@/api/camping';
+import { AxiosResponse } from 'axios';
 
 interface SearchState {
   destination: string;
   dateRange: [Date | null, Date | null];
   personnel: number;
   tags: string[];
-  setSearchState: (state: Omit<SearchState, 'setSearchState' | 'resetSearchState'>) => void;
+  searchResults: AxiosResponse<CampingSite[], any>;
+  setSearchState: (state: Partial<SearchState>) => void;
   resetSearchState: () => void;
 }
 
@@ -18,10 +21,21 @@ const initialState = {
   dateRange: [today, tomorrow] as [Date | null, Date | null],
   personnel: 2,
   tags: [] as string[],
+  searchResults: {} as AxiosResponse<CampingSite[], any>,
 };
 
 export const useSearchStore = create<SearchState>((set) => ({
-  ...initialState,
-  setSearchState: (newState) => set((state) => ({ ...state, ...newState })),
-  resetSearchState: () => set(initialState),
+  destination: '',
+  dateRange: [null, null],
+  personnel: 1,
+  tags: [],
+  searchResults: {} as AxiosResponse<CampingSite[], any>,
+  setSearchState: (state) => set((prev) => ({ ...prev, ...state })),
+  resetSearchState: () => set({
+    destination: '',
+    dateRange: [null, null],
+    personnel: 1,
+    tags: [],
+    searchResults: {} as AxiosResponse<CampingSite[], any>
+  }),
 })); 
