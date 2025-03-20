@@ -29,7 +29,7 @@ export default function SearchResultPage() {
     const items = searchResults.data;
     const campingSites = Array.isArray(searchResults) ? searchResults : [searchResults];
 
-    console.log('검색 결과', searchResults);
+    // console.log('검색 결과', searchResults);
 
     return (
         <AppWrapper>

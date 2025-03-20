@@ -27,7 +27,7 @@ export default function CampingList() {
     useEffect(() => {
         const getUserLocation = () => {
             if (!navigator.geolocation) {
-                console.log('Geolocation이 지원되지 않는 브라우저입니다.');
+                // console.log('Geolocation이 지원되지 않는 브라우저입니다.');
                 setUserLocation({
                     mapX: '128.6142847',
                     mapY: '36.0345423'
@@ -44,7 +44,7 @@ export default function CampingList() {
                     });
                 },
                 (error) => {
-                    console.error('위치 정보를 가져오는데 실패했습니다:', error);
+                    // console.error('위치 정보를 가져오는데 실패했습니다:', error);
                     setUserLocation({
                         mapX: '128.6142847',
                         mapY: '36.0345423'
@@ -71,7 +71,7 @@ export default function CampingList() {
             const results = await searchLocationBasedList(locationParams);
             return Array.isArray(results) ? results : [];
         } catch (error) {
-            console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
+            // console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
             return [];
         }
     };
@@ -97,7 +97,7 @@ export default function CampingList() {
                 setCurrentRadius(radius);
                 setCampingSites(sites);
             } catch (error) {
-                console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
+                // console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
             } finally {
                 setIsLoading(false);
             }

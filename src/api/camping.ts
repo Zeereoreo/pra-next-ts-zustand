@@ -60,10 +60,10 @@ interface ApiResponse {
 export const searchCampingSites = async (params: SearchParams = {}) => {
   try {
     const encodedKeyword = params.keyword ? encodeURIComponent(params.keyword) : '';
-    console.log('baseList API 요청 파라미터:', {
-      ...params,
-      keyword: encodedKeyword
-    });
+    // console.log('baseList API 요청 파라미터:', {
+    //   ...params,
+    //   keyword: encodedKeyword
+    // });
     const response = await instance.get<CampingSite[]>('/basedList', {
       params: {
         numOfRows: params.numOfRows || 10,
@@ -74,10 +74,10 @@ export const searchCampingSites = async (params: SearchParams = {}) => {
         // induty: params.induty,
       },
     });
-    console.log('baseList API 응답:', response);
+    // console.log('baseList API 응답:', response);
     return response;
   } catch (error) {
-    console.error('baseList API 호출 실패:', error);
+    // console.error('baseList API 호출 실패:', error);
     throw error;
   }
 };
@@ -92,7 +92,7 @@ export const getCampingSiteDetails = async (contentId: string) => {
     });
     return response;
   } catch (error) {
-    console.error('Failed to get camping site details:', error);
+    // console.error('Failed to get camping site details:', error);
     throw error;
   }
 };
@@ -111,7 +111,7 @@ export const searchLocationBasedList = async (params: LocationSearchParams) => {
     });
     return response;
   } catch (error) {
-    console.error('Failed to search location based camping sites:', error);
+    // console.error('Failed to search location based camping sites:', error);
     throw error;
   }
 };
@@ -120,10 +120,10 @@ export const searchLocationBasedList = async (params: LocationSearchParams) => {
 export const searchCampingList = async (params: SearchParams = {}) => {
   try {
     const keyword = params.keyword || '야영장';
-    console.log('searchList API 요청 파라미터:', {
-      ...params,
-      keyword
-    });
+    // console.log('searchList API 요청 파라미터:', {
+    //   ...params,
+    //   keyword
+    // });
     const response = await instance.get<CampingSite[]>('/searchList', {
       params: {
         numOfRows: params.numOfRows || 10,
@@ -131,10 +131,10 @@ export const searchCampingList = async (params: SearchParams = {}) => {
         keyword,
       },
     });
-    console.log('searchList API 응답:', response);
+    // console.log('searchList API 응답:', response);
     return response;
   } catch (error) {
-    console.error('searchList API 호출 실패:', error);
+    // console.error('searchList API 호출 실패:', error);
     throw error;
   }
 }; 

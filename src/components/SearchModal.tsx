@@ -101,7 +101,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             }
 
             const searchKeyword = searchKeywords.join('');
-            console.log('검색 키워드:', searchKeyword);
+            // console.log('검색 키워드:', searchKeyword);
 
             // searchList API 호출
             const searchParams: SearchParams = {
@@ -111,7 +111,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             };
 
             const response = await searchCampingList(searchParams);
-            console.log('검색 결과:', response);
+            // console.log('검색 결과:', response);
 
             // 모든 상태를 한 번에 업데이트
             setSearchState({
@@ -119,14 +119,14 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 searchResults: response
             });
 
-            console.log('저장된 상태:', useSearchStore.getState());
+            // console.log('저장된 상태:', useSearchStore.getState());
 
             onClose();
 
             // 검색 결과 페이지로 이동
             router.push('/search');
         } catch (error) {
-            console.error('검색 실패:', error);
+            // console.error('검색 실패:', error);
         } finally {
             setIsLoading(false);
         }

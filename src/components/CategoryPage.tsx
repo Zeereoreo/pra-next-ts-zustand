@@ -45,7 +45,7 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
             }
             return [];
         } catch (error) {
-            console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
+            // console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
             return [];
         }
     };
