@@ -81,4 +81,31 @@ export const TagItem = styled.span`
   border-radius: 4px;
   font-size: 0.9rem;
   color: #4b5563;
+`;
+
+export const FavoriteButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.3rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    z-index: 1;
+
+    &:hover {
+        background-color: #fff;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
 `; 

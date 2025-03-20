@@ -4,6 +4,7 @@ import { useSearchStore } from '@/store/searchStore';
 import BackHeader from '@/components/BackHeader';
 import Search from '@/components/Search';
 import BottomNavigation from '@/components/BottomNavigation';
+import FavoriteButton from '@/components/FavoriteButton';
 import {
     AppWrapper,
     MobileContainer,
@@ -47,6 +48,8 @@ export default function SearchResultPage() {
                                         <TagList>
                                             {site.induty && <TagItem>{site.induty}</TagItem>}
                                         </TagList>
+                                        <FavoriteButton site={site} />
+
                                     </CardContent>
                                 </CampingCard>
                             ))}

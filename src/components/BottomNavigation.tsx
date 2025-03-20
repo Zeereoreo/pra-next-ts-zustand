@@ -24,13 +24,11 @@ export default function BottomNavigation() {
             case 'search':
                 setIsSearchModalOpen(true);
                 break;
-            case 'cs':
-                // 고객센터 기능 준비중
-                alert('준비중인 기능입니다.');
+            case 'favorites':
+                router.push('/favorites');
                 break;
             case 'profile':
-                // 프로필 기능 준비중
-                alert('준비중인 기능입니다.');
+                router.push('/profile');
                 break;
             default:
                 break;
@@ -51,9 +49,9 @@ export default function BottomNavigation() {
                     <IconWrapper>🔍</IconWrapper>
                     검색
                 </NavItem>
-                <NavItem onClick={() => handleNavClick('cs')}>
-                    <IconWrapper>🎧</IconWrapper>
-                    고객센터
+                <NavItem onClick={() => handleNavClick('favorites')}>
+                    <IconWrapper>⭐</IconWrapper>
+                    즐겨찾기
                 </NavItem>
                 <NavItem onClick={() => handleNavClick('profile')}>
                     <IconWrapper>👤</IconWrapper>

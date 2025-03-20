@@ -13,6 +13,7 @@ import {
     TagList,
     TagItem
 } from '@/styles/campingList.styles';
+import FavoriteButton from './FavoriteButton';
 
 const INITIAL_RADIUS = 2000;
 const MAX_RADIUS = 20000;
@@ -124,11 +125,16 @@ export default function CampingList() {
                     <CampingCard key={site.contentId}>
                         <CardImage $imageUrl={site.firstImageUrl} />
                         <CardContent>
+
                             <CampingName>{site.facltNm}</CampingName>
                             <TagList>
                                 {site.induty && <TagItem>{site.induty}</TagItem>}
                             </TagList>
+                            <FavoriteButton site={site} />
+
+
                         </CardContent>
+
                     </CampingCard>
                 ))}
             </CampingGrid>
