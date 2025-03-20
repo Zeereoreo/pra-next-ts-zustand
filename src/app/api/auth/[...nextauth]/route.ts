@@ -3,7 +3,7 @@ import NaverProvider from "next-auth/providers/naver";
 import KakaoProvider from "next-auth/providers/kakao";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
+const authOptions = {
   providers: [
     NaverProvider({
       clientId: process.env.NAVER_ID as string,
@@ -23,5 +23,12 @@ export const authOptions = {
   },
 };
 
-const handler = NextAuth(authOptions); 
-export { handler as GET, handler as POST }; 
+const handler = NextAuth(authOptions);
+
+export async function GET(request: Request) {
+  return handler(request);
+}
+
+export async function POST(request: Request) {
+  return handler(request);
+}
