@@ -77,16 +77,16 @@ export default function Page() {
             return (
                 <MobileContainer>
                     <BackHeader title={category.title} />
-                    <MainContainer>
-                        <PrepareContainer>
-                            <PrepareIcon>🏗️</PrepareIcon>
-                            <PrepareTitle>서비스 준비중입니다</PrepareTitle>
-                            <PrepareText>
-                                더 나은 서비스 제공을 위해 준비중입니다.<br />
-                                곧 만나뵙겠습니다!
-                            </PrepareText>
-                        </PrepareContainer>
-                    </MainContainer>
+                    {/* <MainContainer> */}
+                    <PrepareContainer>
+                        <PrepareIcon>🏗️</PrepareIcon>
+                        <PrepareTitle>서비스 준비중입니다</PrepareTitle>
+                        <PrepareText>
+                            더 나은 서비스 제공을 위해 준비중입니다.<br />
+                            곧 만나뵙겠습니다!
+                        </PrepareText>
+                    </PrepareContainer>
+                    {/* </MainContainer> */}
                 </MobileContainer>
             );
         }
