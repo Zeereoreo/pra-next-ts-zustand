@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { searchLocationBasedList, type LocationSearchParams, type CampingSite } from '@/api/camping';
 import {
     ListContainer,
@@ -14,12 +15,15 @@ import {
     TagItem
 } from '@/styles/campingList.styles';
 import FavoriteButton from './FavoriteButton';
+import { useCampingStore } from '@/store/campingStore';
 
 const INITIAL_RADIUS = 2000;
 const MAX_RADIUS = 20000;
 const RADIUS_INCREMENT = 3000;
 
 export default function CampingList() {
+    const router = useRouter();
+    const setStoreCampingSites = useCampingStore(state => state.setCampingSites);
     const [campingSites, setCampingSites] = useState<CampingSite[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [userLocation, setUserLocation] = useState<{ mapX: string; mapY: string } | null>(null);
@@ -97,6 +101,7 @@ export default function CampingList() {
 
                 setCurrentRadius(radius);
                 setCampingSites(sites);
+                setStoreCampingSites(sites); // store에 데이터 저장
             } catch (error) {
                 // console.error('캠핑장 목록을 불러오는데 실패했습니다:', error);
             } finally {
@@ -105,7 +110,11 @@ export default function CampingList() {
         };
 
         loadMoreCampingSites();
-    }, [userLocation]);
+    }, [userLocation, setStoreCampingSites]);
+
+    const handleCardClick = (contentId: string) => {
+        router.push(`/camping/${contentId}`);
+    };
 
     if (isLoading) {
         return <ListContainer>로딩 중...</ListContainer>;
@@ -122,19 +131,19 @@ export default function CampingList() {
             </ListTitle>
             <CampingGrid>
                 {campingSites.map((site) => (
-                    <CampingCard key={site.contentId}>
+                    <CampingCard
+                        key={site.contentId}
+                        onClick={() => handleCardClick(site.contentId)}
+                        style={{ cursor: 'pointer' }}
+                    >
                         <CardImage $imageUrl={site.firstImageUrl} />
                         <CardContent>
-
                             <CampingName>{site.facltNm}</CampingName>
                             <TagList>
                                 {site.induty && <TagItem>{site.induty}</TagItem>}
                             </TagList>
                             <FavoriteButton site={site} />
-
-
                         </CardContent>
-
                     </CampingCard>
                 ))}
             </CampingGrid>

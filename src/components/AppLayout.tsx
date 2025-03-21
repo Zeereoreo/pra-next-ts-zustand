@@ -31,10 +31,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <Header />
                 <Search />
                 <CategoryMenu />
-                <MainContainer>
-                    <CampingList />
-                    {children}
-                </MainContainer>
+                {/* <MainContainer> */}
+                <CampingList />
+                {children}
+                {/* </MainContainer> */}
                 <BottomNavigation />
             </MobileContainer>
             <DesktopSection>

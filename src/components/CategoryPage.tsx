@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { searchCampingSites, type SearchParams, type CampingSite } from '@/api/camping';
 import BackHeader from './BackHeader';
 import Search from './Search';
@@ -17,6 +18,7 @@ import {
     TagItem
 } from '@/styles/campingList.styles';
 import CategoryMenu from './CategoryMenu';
+import { useCampingStore } from '@/store/campingStore';
 
 interface CategoryPageProps {
     title: string;
@@ -24,9 +26,15 @@ interface CategoryPageProps {
 }
 
 export default function CategoryPage({ title, industyTypes }: CategoryPageProps) {
+    const router = useRouter();
+    const setStoreCampingSites = useCampingStore(state => state.setCampingSites);
     const [campingSites, setCampingSites] = useState<CampingSite[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
+
+    const handleCardClick = (contentId: string) => {
+        router.push(`/camping/${contentId}`);
+    };
 
     const loadCampingSites = async (pageNo: number) => {
         try {
@@ -71,6 +79,7 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
             setIsLoading(true);
             const sites = await loadMoreCampingSites();
             setCampingSites(sites);
+            setStoreCampingSites(sites); // store에 데이터 저장
             setIsLoading(false);
         };
 
@@ -83,9 +92,9 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
                 <BackHeader title={title} />
                 <Search />
                 <CategoryMenu />
-                <MainContainer>
-                    <ListContainer>로딩 중...</ListContainer>
-                </MainContainer>
+                {/* <MainContainer> */}
+                <ListContainer>로딩 중...</ListContainer>
+                {/* </MainContainer> */}
                 <BottomNavigation />
             </>
         );
@@ -96,23 +105,27 @@ export default function CategoryPage({ title, industyTypes }: CategoryPageProps)
             <BackHeader title={title} />
             <Search />
             <CategoryMenu />
-            <MainContainer>
-                <ListContainer>
-                    <CampingGrid>
-                        {campingSites.map((site) => (
-                            <CampingCard key={site.contentId}>
-                                <CardImage $imageUrl={site.firstImageUrl} />
-                                <CardContent>
-                                    <CampingName>{site.facltNm}</CampingName>
-                                    <TagList>
-                                        {site.induty && <TagItem>{site.induty}</TagItem>}
-                                    </TagList>
-                                </CardContent>
-                            </CampingCard>
-                        ))}
-                    </CampingGrid>
-                </ListContainer>
-            </MainContainer>
+            {/* <MainContainer> */}
+            <ListContainer>
+                <CampingGrid>
+                    {campingSites.map((site) => (
+                        <CampingCard
+                            key={site.contentId}
+                            onClick={() => handleCardClick(site.contentId)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <CardImage $imageUrl={site.firstImageUrl} />
+                            <CardContent>
+                                <CampingName>{site.facltNm}</CampingName>
+                                <TagList>
+                                    {site.induty && <TagItem>{site.induty}</TagItem>}
+                                </TagList>
+                            </CardContent>
+                        </CampingCard>
+                    ))}
+                </CampingGrid>
+            </ListContainer>
+            {/* </MainContainer> */}
             <BottomNavigation />
         </>
     );

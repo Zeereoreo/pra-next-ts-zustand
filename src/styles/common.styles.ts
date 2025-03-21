@@ -28,8 +28,8 @@ export const MobileContainer = styled.div`
 
 export const MainContainer = styled.div`
   flex: 1;
-  overflow-y: hidden;
-  padding-bottom: 60px;
+  overflow-y: auto;
+  padding-bottom: 80px;
 `;
 
 export const DesktopSection = styled.div`

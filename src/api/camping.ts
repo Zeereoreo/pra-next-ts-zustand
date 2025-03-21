@@ -83,19 +83,19 @@ export const searchCampingSites = async (params: SearchParams = {}) => {
 };
 
 // 캠핑장 상세 정보 조회
-export const getCampingSiteDetails = async (contentId: string) => {
-  try {
-    const response = await instance.get<CampingSite>('/baseInfo', {
-      params: {
-        contentId,
-      },
-    });
-    return response;
-  } catch (error) {
-    // console.error('Failed to get camping site details:', error);
-    throw error;
-  }
-};
+// export const getCampingSiteDetails = async (contentId: string) => {
+//   try {
+//     const response = await instance.get<CampingSite>('/baseInfo', {
+//       params: {
+//         contentId,
+//       },
+//     });
+//     return response;
+//   } catch (error) {
+//     // console.error('Failed to get camping site details:', error);
+//     throw error;
+//   }
+// };
 
 // 위치 기반 캠핑장 목록 조회
 export const searchLocationBasedList = async (params: LocationSearchParams) => {
